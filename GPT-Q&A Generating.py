@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[15]:
-
 
 import pandas as pd
 import re
@@ -11,23 +9,11 @@ import openai
 from openai import OpenAI
 from tqdm import tqdm
 
-
-# In[17]:
-
-
 #选择文件所在位置，读取原始数据
 df=pd.read_excel(r"C:\Users\Desktop\Data.xlsx")
 
-
-# In[18]:
-
-
 #打印前几行数据以确认读取正确
 print(df.head())
-
-
-# In[19]:
-
 
 #定义函数，对模型生成的文本提取经验分类、问题、答案
 def extract_qa_with_categories(text):
@@ -67,29 +53,14 @@ def extract_qa_with_categories(text):
     return df
 
 
-# In[20]:
-
-
 #初始化一个列表来存储问答对和模块类别
 qa_pairs = []
-
-
-# In[21]:
-
 
 #获取已保存在环境变量中的API密钥
 client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"),)
 
-
-# In[22]:
-
-
 #定义工作角色和背景
 system_message = {"role": "system", "content": "你是一名具有丰富国际工程合同管理经验、AI相关经验的LLM模型训练师，我需要大量的问答数据对模型进行训练，因此需要你帮助生成。请站在承包商一方从业人员的角度，以符合逻辑的方式进行提问和回答，你可以生成多条，从而覆盖这个知识点，并展现出不同的形式。要求领域为国际工程商务合同管理，从“小于5年的从业者”，“5-10年的从业者”，“大于10年的从业者”，根据这些用户可能出现的疑问生成不同难度的问答，问答前先展示是三类从业者中哪一类，然后给出问题：Q计数:问题内容，如Q1....Q2；答案：A计数:答案内容,"}
-
-
-# In[23]:
-
 
 # 根据原始数据表的每一行的审查规则，生成文本。提取问答，同时加上审查点和审查规则，其中tqdm提供了进度条功能
 for index, row in tqdm(df.iterrows(), total=df.shape[0], desc="Generating QA Pairs"):
@@ -118,29 +89,16 @@ for index, row in tqdm(df.iterrows(), total=df.shape[0], desc="Generating QA Pai
 qa_df = pd.concat(qa_pairs, ignore_index=True)
 
 
-# In[24]:
-
-
 #user_message
 
-
-# In[25]:
-
-
 #generated_text
-
-
-# In[26]:
 
 
 #pf = extract_qa_with_categories(generated_text)
 #print(pf)
 
 
-# In[28]:
-
-
-file_path = r'C:\Users\30452\Desktop\QA_Data.xlsx'  
+file_path = r'C:\Users\Desktop\QA_Data.xlsx'  
 # 检查文件是否存在
 if os.path.exists(file_path):
     # 文件已存在，询问用户是否删除
@@ -157,14 +115,6 @@ else:
     qa_df.to_excel(file_path, index=False, sheet_name='QA Data')
     print("数据已成功写入到 Excel 文件中！")
 
-
-# In[1]:
-
-
-jupyter nbconvert --to script xxx.ipynb
-
-
-# In[ ]:
 
 
 
