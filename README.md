@@ -138,7 +138,7 @@ else:
     print("数据已成功写入到 Excel 文件中！")
 ```
 
-输入效果图如下：
 
+# 结果展示
 ![image](https://github.com/user-attachments/assets/619a17f1-ba40-4987-9f8f-c24a46b70b09)
 
