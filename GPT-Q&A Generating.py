@@ -63,7 +63,6 @@ def extract_qa_with_categories(text):
 qa_pairs = []
 
 
-
 # 根据原始数据表的每一行的审查规则，生成文本。提取问答，同时加上审查点和审查规则，其中tqdm提供了进度条功能
 for index, row in tqdm(df.iterrows(), total=df.shape[0], desc="Generating QA Pairs"):
     user_message = {
@@ -90,10 +89,8 @@ for index, row in tqdm(df.iterrows(), total=df.shape[0], desc="Generating QA Pai
 # 将所有问答对合并到一个 DataFrame 中
 qa_df = pd.concat(qa_pairs, ignore_index=True)
 
-#pf = extract_qa_with_categories(generated_text)
-#print(pf)
 
-
+#选择输出位置并输入文档
 file_path = r'C:\Users\Desktop\QA_Data.xlsx'  
 # 检查文件是否存在
 if os.path.exists(file_path):
