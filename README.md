@@ -13,8 +13,9 @@
 
 `GPT-QA-Generating` 使用方法:
 
+准备工作，导入文件并获取API密钥。出于安全考虑，密钥已提前存在环境变量中，以下代码直接获取。
+
 ```python
-#准备工作，导入文件并获取API
 import pandas as pd
 import re
 import os
@@ -28,7 +29,12 @@ df=pd.read_excel(r"C:\Users\Desktop\Data.xlsx")
 #打印前几行数据以确认读取正确
 print(df.head())
 
-#获取已保存在环境变量中的API密钥
+#获取已保存在环境变量中的API密钥，或换成自己的密钥
 client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"),)
-
 ```
+
+
+
+
+
+
