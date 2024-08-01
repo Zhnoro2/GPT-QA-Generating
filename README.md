@@ -42,7 +42,7 @@ system_message = {"role": "system", "content": "你是一名具有丰富国际�
 ```
 
 定义函数
->假设模型已经生成回答文本，对文本提取难度分类、问题、答案，导入到数据表中
+>假设模型已经生成回答文本，对文本提取难度分类、问题、答案，导入到数据表中。
 
 ```python
 def extract_qa_with_categories(text):
@@ -83,7 +83,7 @@ def extract_qa_with_categories(text):
 ```
 
 问答生成
->调用API生成问答对，利用函数提取数据。调用前确保已经正确设置代理
+>调用API生成问答对，利用函数提取数据。调用前确保已经正确设置代理。
 
 ```python
 #初始化一个列表来存储问答对和模块类别
@@ -116,7 +116,7 @@ for index, row in tqdm(df.iterrows(), total=df.shape[0], desc="Generating QA Pai
 qa_df = pd.concat(qa_pairs, ignore_index=True)
 ```
 
-将存储在DataFrame的数据存储在excel表格中
+将存储在DataFrame的数据输出。
 ```python
 # 设置存储路径
 file_path = r'C:\Users\Desktop\QA_Data.xlsx'
@@ -137,4 +137,8 @@ else:
     qa_df.to_excel(file_path, index=False, sheet_name='QA Data')
     print("数据已成功写入到 Excel 文件中！")
 ```
-    
+
+输入效果图如下：
+
+![image](https://github.com/user-attachments/assets/619a17f1-ba40-4987-9f8f-c24a46b70b09)
+
