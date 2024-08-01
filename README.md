@@ -13,7 +13,8 @@
 
 `GPT-QA-Generating` 使用方法:
 
-准备工作，导入文件并获取API密钥。出于安全考虑，密钥已提前存在环境变量中，以下代码直接获取。
+准备工作
+导入文件并获取API密钥。出于安全考虑，密钥已提前存在环境变量中，以下代码直接获取。
 
 ```python
 import pandas as pd
@@ -33,12 +34,51 @@ print(df.head())
 client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"),)
 ```
 
-定义工作角色和背景。主要包含两个方面：（1）定义大模型的角色和项目的背景，以更好发挥大模型的能力；（2）要求大模型按照按照不同的“难度”来生成问题，以此确保问题的多样化，更全面地覆盖现实世界中从业者可能给出的问题。在本项目中，问题的难度、深度被细化为“不同年限经验的从业者”可能提出的问题。
+定义工作角色和背景
+>主要包含两个方面：（1）定义大模型的角色和项目的背景，以更好发挥大模型的能力；（2）要求大模型按照按照不同的“难度”来生成问题，以此确保问题的多样化，更全面地覆盖现实世界中从业者可能给出的问题。在本项目中，问题的难度、深度被细化为“不同年限经验的从业者”可能提出的问题。
 
 ```python
 system_message = {"role": "system", "content": "你是一名具有丰富国际工程合同管理经验、AI相关经验的LLM模型训练师，我需要大量的问答数据对模型进行训练，因此需要你帮助生成。请站在承包商一方从业人员的角度，以符合逻辑的方式进行提问和回答，你可以生成多条，从而覆盖这个知识点，并展现出不同的形式。要求领域为国际工程商务合同管理，从“小于5年的从业者”，“5-10年的从业者”，“大于10年的从业者”，根据这些用户可能出现的疑问生成不同难度的问答，问答前先展示是三类从业者中哪一类，然后给出问题：Q计数:问题内容，如Q1....Q2；答案：A计数:答案内容,"}
 ```
 
+定义函数
+对模型生成的文本提取经验分类、问题、答案
 
+
+def extract_qa_with_categories(text):
+    # 正则表达式匹配经验分类和后续的问题与答案
+    category_pattern = r"(小于5年的从业者|5-10年的从业者|大于10年的从业者)"
+    # 通过正则表达式对问答进行分块，并且处理可能的空白字符
+    qa_pattern = r"Q(\d*)\s*:\s*\**\s*(.+?)\s*\**\s*(?:\n|\s)+A\1\s*:\s*(.+?)(?=(?:\n\s*|\s*)Q\d*|\Z)"
+    
+    categories = re.findall(category_pattern, text)
+    split_text = re.split(category_pattern, text)
+    
+    questions = []
+    answers = []
+    categories_result = []
+    
+    # 对每个分类进行处理
+    for i in range(1, len(split_text), 2):
+        # 找到每个分类后的文本块
+        category = split_text[i]
+        category_text = split_text[i+1]
+        
+        # 在当前分类文本块中匹配问题和答案
+        qas = re.findall(qa_pattern, category_text, re.DOTALL)
+        
+        for q, question, answer in qas:
+            questions.append(question.strip())
+            answers.append(answer.strip())
+            categories_result.append(category)
+    
+    # 创建 DataFrame 进行存储
+    df = pd.DataFrame({
+        'Category': categories_result,
+        'Question': questions,
+        'Answer': answers
+    })
+    
+    return df
 
 
