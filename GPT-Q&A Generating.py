@@ -90,7 +90,7 @@ for index, row in tqdm(df.iterrows(), total=df.shape[0], desc="Generating QA Pai
 qa_df = pd.concat(qa_pairs, ignore_index=True)
 
 
-#选择输出位置并输入文档
+#选择位置并输出文档
 file_path = r'C:\Users\Desktop\QA_Data.xlsx'  
 # 检查文件是否存在
 if os.path.exists(file_path):
