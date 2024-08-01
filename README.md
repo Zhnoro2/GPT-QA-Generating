@@ -5,5 +5,30 @@
 >人工整理的问答对可能来自于通讯软件中的交流信息，比如邮件、会议记录、聊天信息等，虽然包含专业知识，但也往往存在大量噪音，数据质量难以把握，以及上下文依赖性强、数据分布不平衡等问题。尽管人工整理这些信息并将其转化为需要的问答对是可行的，但效率极低且成本较高。考虑到目前GPT-4的对话能力已非常强大，可以利用其生成的对话作为训练专业大模型的材料。通过调用API，我们可以高效地将专业材料交给GPT-4，生成大量高质量的问答数据，从而为模型的训练提供支持。
 
 ## 数据准备
-本代码之前用于合同领域的问答对生成，使用的数据包含了两部分，
+本代码之前用于合同领域的问答对生成，使用的数据包含了两个要素，一个是合同要点，即该部分内容与合同的哪个方面相关，或属于哪个部分；另一个是具体的审查规则，用于明确某个审查点的定义、如何判断是否存在风险等。以下以合同中常见的支付方式为例，后续会展示GPT基于该要点生成的问答对。
+
 ![image](https://github.com/user-attachments/assets/4fec875e-5616-49ad-9571-90a75bc9cc9d)
+
+## 代码说明
+
+`GPT-QA-Generating` 使用方法:
+
+```python
+#准备工作，导入文件并获取API
+import pandas as pd
+import re
+import os
+import openai
+from openai import OpenAI
+from tqdm import tqdm
+
+#选择文件所在位置，读取原始数据
+df=pd.read_excel(r"C:\Users\Desktop\Data.xlsx")
+
+#打印前几行数据以确认读取正确
+print(df.head())
+
+#获取已保存在环境变量中的API密钥
+client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"),)
+
+```
