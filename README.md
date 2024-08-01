@@ -118,7 +118,7 @@ qa_df = pd.concat(qa_pairs, ignore_index=True)
 
 将存储在DataFrame的数据输出。
 ```python
-# 设置存储路径
+# 选择输出位置
 file_path = r'C:\Users\Desktop\QA_Data.xlsx'
 
 # 检查同名文件是否存在
